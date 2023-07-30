@@ -358,15 +358,20 @@
                   <a target="_blank" href="cetak_data_pengiriman.php?op=kirim&id=<?php echo $rs['id_pengiriman']; ?>" class="btn btn-outline-info" style="height: 38px;margin: 0px 0px 0px 10px;" name="hapus">
                     <i class="bi bi-file-pdf"></i>
                   </a>
-                  <a href ="?page=barang&hapus=<?php echo $rs['id_pengiriman']; ?>" class="btn btn-outline-danger" style="height: 38px;margin: 0 10px;" name="hapus"><i class="bi bi-trash"></i></a>
+                  <a href ="?page=barang&hapus=<?php echo $rs['id_pengiriman']; ?>&nama_gambar=<?php echo $rs['foto_brg'] ?>" class="btn btn-outline-danger" style="height: 38px;margin: 0 10px;" name="hapus"><i class="bi bi-trash"></i></a>
                   <?php
                    if (isset($_GET['hapus'])) {
                        $id_pengiriman = $_GET['hapus'];
+                       $nama_gambar = $_GET['nama_gambar'];
                        if (!empty($id_pengiriman)) {
                       $sqlhapus = "DELETE FROM tbl_pengiriman WHERE id_pengiriman='$id_pengiriman'";
                       if ($conn->query($sqlhapus) === false) {
                           trigger_error ("SQL manual anda salah : ". $sqlhapus . "Error : " .$conn->error, E_USER_ERROR);
                       }else {
+                        $file_path = "./uploads/" . $nama_gambar;
+                        if (file_exists($file_path)) {
+                            unlink($file_path);
+                        }
                         echo '<script>setTimeout(function(){ location.reload(); }, 100);</script>';  echo '<script>
                                   setTimeout(function() {
                                       window.location.href = "?page=pengiriman";
